@@ -1,0 +1,39 @@
+name: Signature with Non-Ascii
+description: Add a signature and a body that contains non-ascii characters
+host: OUTLOOK
+api_set: {}
+script:
+  content: |
+    document.getElementById("addSig").addEventListener("click", addSig);
+
+    async function addSig() {
+      await Office.context.mailbox.item.subject.setAsync("Test Message");
+      await Office.context.mailbox.item.body.setAsync("Test Message: áéúóú", { coercionType: Office.CoercionType.Html });
+      await Office.context.mailbox.item.body.setSignatureAsync(
+        "<div> <table border='0' cellspacing='0' cellpadding='0' width='100%' style='width:100.0%;border-collapse:collapse'> <tbody> <tr> <td valign='top' style='padding:0cm 0cm 0cm 0cm'> <p><span style='font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:#000001'>Signature</span><span style='font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:#000001;mso-ligatures:none'></span></p> </td> </tr> </tbody> </table> </div> <p><span style='font-size:1.0pt;font-family:&quot;remialcxesans&quot;,serif'>&nbsp;</span><span style='font-size:1.0pt;font-family:&quot;template-PkNrQmvzEBSGxQA2ISXJkA&quot;,serif'>&nbsp;</span><span style='font-size:1.0pt;font-family:&quot;zone-1&quot;,serif'>&nbsp;</span><span style='font-size:1.0pt;font-family:&quot;zones-AQ&quot;,serif'>&nbsp;</span></p> </div>",
+        { coercionType: Office.CoercionType.Html },
+      );
+    }
+  language: typescript
+template:
+  content: "<button id=\"addSig\" class=\"ms-Button\">\r\n    <span class=\"ms-Button-label\">Create Msg With Signature</span>\r\n</button>\r\n<p>Adds a simple body that contains non-ascii characters and a simple signature including an inline image (a small\r\n\tstar).</p>\r\n<p>Create the Msg using the button and send it to yourself</p>\r\n<p>Sometimes using ScriptLab the message will arrive with the Content-Type set to <b>text/html; charset=\"us-ascii\"</b>,\r\n\tcausing non-ascii characters to be replaced with question marks(?)</p>"
+  language: html
+style:
+  content: |-
+    section.samples {
+        margin-top: 20px;
+    }
+
+    section.samples .ms-Button, section.setup .ms-Button {
+        display: block;
+        margin-bottom: 5px;
+        margin-left: 20px;
+        min-width: 80px;
+    }
+  language: css
+libraries: |-
+  https://appsforoffice.microsoft.com/lib/1/hosted/office.js
+  https://appsforoffice.microsoft.com/lib/1/hosted/office.d.ts
+
+  https://unpkg.com/office-ui-fabric-core@11.1.0/dist/css/fabric.min.css
+  https://unpkg.com/office-ui-fabric-js@1.5.0/dist/css/fabric.components.min.css
